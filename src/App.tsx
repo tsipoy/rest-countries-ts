@@ -6,7 +6,6 @@ import { GlobalContext } from './components/GlobalContext';
 import Header from './components/Header';
 import CityDetails from './components/CityDetails';
 
-
 function App() {
   return (
     <GlobalContext>
@@ -15,7 +14,7 @@ function App() {
           <Route exact path="/">
             <CitiesLists />
           </Route>
-          <Route exact path="/cityDetails/:cityName">
+          <Route exact path="/:cityName">
             <CityDetails />
           </Route>
         </Switch>

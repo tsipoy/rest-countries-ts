@@ -9,37 +9,40 @@ const WrapperInner = styled.div `
     margin-block-end: 32px;
     margin-inline-start: 32px;
     margin-inline-end: 32px;
-    box-shadow: 0.3px 0.3px 6px #808080;
-
-    ul {
-        padding-inline-start: 0;   
-    }
-
-    li {
-        list-style: none;
-    }
-
-    span {
-        font-weight: bold;
-    }
-
-    img {
-        width: 100%;
-        height: auto;
-    }
-
-    .country-about {
-        padding-inline-start: 32px;
-        padding-block-end: 32px;
-    }
+    box-shadow: rgb(0 0 0 / 3%) 0px 0px 0.7rem 0.2rem;
+    border-radius: 5px;
 
     @media(min-width: 800px) {
         margin-inline-start: 0;
         margin-inline-end: 0;
     }
+`;
 
+const FrontPageContainer = styled.div `
 
 `;
+export const FlagImg = styled.img `
+    width:  100%;
+    height: 218px;
+    object-fit: cover;
+    border-radius: 5px 5px 0 0;
+`;
+const AboutCountry = styled.div `
+    padding-inline-start: 32px;
+    padding-block-end: 32px;
+`;
+const CountryName = styled.h2 `
+`;
+export const ListContainer = styled.ul `
+    padding-inline-start: 0;   
+`;
+export const List = styled.li `
+    list-style: none;
+`;
+export const Span = styled.span `
+    font-weight: 600;
+`;
+
 
 const Wrapper = styled.div `
     display: grid;
@@ -48,22 +51,22 @@ const Wrapper = styled.div `
 `;
 
 export function CitiesLists () {
-    const { countries, loading } = useContext(Context);
-    console.log(countries)
-    const allCountries = countries.map((country => (
+    const { state, dispatch } = useContext(Context);
+    // console.log(state.countries)
+    const allCountries = state.countries.map((country => (
             <WrapperInner key={country.name}>
-                <Link to={`/cityDetails/${country.name}`}>
-                    <div>
-                        <img src={country.flag} alt={country.name}/>
-                        <div className="country-about">
-                            <h2>{country.name}</h2>
-                            <ul>
-                                <li><span>Population</span>: {country.population}</li>
-                                <li><span>Region</span>: {country.region}</li>
-                                <li><span>Capital</span>: {country.capital}</li>
-                            </ul>
-                        </div>
-                    </div>
+                <Link to={`/${country.name}`}>
+                    <FrontPageContainer>
+                        <FlagImg src={country.flag} alt={country.name}/>
+                        <AboutCountry>
+                            <CountryName>{country.name}</CountryName>
+                            <ListContainer>
+                                <List><Span>Population</Span>: {country.population}</List>
+                                <List><Span>Region</Span>: {country.region}</List>
+                                <List><Span>Capital</Span>: {country.capital}</List>
+                            </ListContainer>
+                        </AboutCountry>
+                    </FrontPageContainer>
                 </Link>
             </WrapperInner>
     )))
@@ -71,7 +74,7 @@ export function CitiesLists () {
     return (
         <>
             <Inputs />
-            {loading ? <p>Loading ... </p> : 
+            {state.loading ? <p>Loading ... </p> : 
             <Wrapper>
                 {allCountries}
             </Wrapper>

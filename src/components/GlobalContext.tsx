@@ -1,6 +1,5 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 
-
 type Country = {
     name: string,
     topLevelDomain: string[],
@@ -28,42 +27,51 @@ type Country = {
     cioc: string
 }
 
-
 type State = {
-    countries: Country[];
-    loading: boolean;
-    // inputValue: string;
+    countries: Country[]
+    loading: boolean
+    inputValue: string
 }
 
 const initialState = {
     countries: [],
     loading: true,
-    // inputValue: ""
+    inputValue: ""
 }
 
-type Action = {type: "SET_COUNTRY",payload: Country[], } 
+type Action = 
+| {type: string, payload: Country[] }
+| {type: string, payload: string } 
 
+export const Context = createContext<{
+    state: State;
+    dispatch: React.Dispatch<Action>
+}>({
+    state: initialState,
+    dispatch: () => null
+});
 
-
-export const Context = createContext<State>(initialState);
-
-function reducer( state: State, action: Action,) {
+function reducer( state: State, action: Action ):any {
     switch(action.type) {
         case 'SET_COUNTRY':
-         return { countries: action.payload, loading: false}
-
+            return {...state, countries: action.payload, loading: false}
+        case 'SET_INPUTVALUE': return {
+            ...state,
+            inputValue :action.payload
+        }
         default:
             return state;
     }
 }
 
-export const GlobalContext: React.FC  = ({ children }) => {
+export const GlobalContext: React.FC = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-
+    // console.log(state);
+    
     const getCountries = async () => {
         const response = await fetch("https://restcountries.eu/rest/v2/all");
         const data = await response.json();
-        dispatch({ type: "SET_COUNTRY", payload: data})
+        dispatch({type: "SET_COUNTRY", payload: data})
     }
 
     useEffect(() => {
@@ -71,10 +79,7 @@ export const GlobalContext: React.FC  = ({ children }) => {
     }, [])
 
     return (
-        <Context.Provider value={{ countries: state.countries, 
-        loading: state.loading,
-        // inputValue: state.inputValue,
-        }}>
+        <Context.Provider value={{ state, dispatch}}>
             { children }
         </Context.Provider> 
     )

@@ -2,6 +2,8 @@ import React, { useContext } from 'react'
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Context } from './GlobalContext';
+import styled from "styled-components";
+import { ListContainer, List, Span, FlagImg } from "../components/CitiesLists"
 
 interface ParamsTypes {
     cityName?: string,
@@ -9,50 +11,72 @@ interface ParamsTypes {
 
 
 const CityDetails = () => {
-    const { countries } = useContext(Context);
+    const { state, dispatch } = useContext(Context);
     const { cityName } = useParams<ParamsTypes>();
     console.log(cityName);
+    
 
-    const countryDetails = countries.find((countryName) => countryName.name === cityName);
+    const countryDetails = state.countries.find((countryName) => countryName.name === cityName);
+    console.log(countryDetails)
 
-    const getCurrencies = countryDetails?.currencies.map((currency) => <span key={currency.code}>{currency.name}</span>);
-    const getLanguages = countryDetails?.languages.map((language) => <span key={language.iso639_1}>{language.name}</span>);
-    const getBorders = countryDetails?.borders.map((border) => <button key={border}>{border}</button>);
-
+    const findCountry = state.countries.filter(country => country.name === cityName);
+    console.log(findCountry);
+    
+    
+    const getCurrencies = countryDetails?.currencies.map((currency) => <Span key={currency.code}>{currency.name}</Span>);
+    const getLanguages = countryDetails?.languages.map((language) => <Span key={language.iso639_1}>{language.name}</Span>);
+    const getBorders = countryDetails?.borders.map((border) => <Button key={border}>{border}</Button>);
 
     return (
-        <div>
+        <DetailsOuterWrapper>
             <Link to="/">
                 <button>Back</button>
             </Link>
-            <div>
-                <img src={countryDetails?.flag} alt={countryDetails?.name} />
-                <h3>{countryDetails?.name}</h3>
-                <nav>
-                    <ul>
-                        <li><span>Native name: </span>{countryDetails?.nativeName}</li>
-                        <li><span>Population: </span>{countryDetails?.population}</li>
-                        <li><span>Region: </span>{countryDetails?.region}</li>
-                        <li><span>Sub Region: </span>{countryDetails?.subregion}</li>
-                        <li><span>Capital:</span> {countryDetails?.capital}</li>
-                    </ul>
-                    <ul>
-                        <li><span>Top level domain: </span>{countryDetails?.topLevelDomain}</li>
-                        <li><b>Currencies: </b>{getCurrencies}</li>
-                        <li><b>Languages:</b>{getLanguages}</li>
-                    </ul>
-                </nav>
-                <div>
-                    <h4>Border Countries: </h4>
-                    <div>
-                        {getBorders}
-                    </div>
-                </div>
-            </div>
-        </div>
+            {findCountry.map((country, index) => {
+
+                return (
+                    <DetailsInnerWrapper key={index}>
+                        <FlagImg src={country?.flag} alt={country?.name} />
+                        <CountryHeading>{country?.name}</CountryHeading>
+                        <CountryContainer>
+                            <ListContainer>
+                                <List><Span>Native name: </Span>{country?.nativeName}</List>
+                                <List><Span>Population: </Span>{country?.population}</List>
+                                <List><Span>Region: </Span>{country?.region}</List>
+                                <List><Span>Sub Region: </Span>{country?.subregion}</List>
+                                <List><Span>Capital:</Span> {country?.capital}</List>
+                            </ListContainer>
+                            <ListContainer>
+                                <List><Span>Top level domain: </Span>{country?.topLevelDomain}</List>
+                                <List><b>Currencies: </b>{getCurrencies}</List>
+                                <List><b>Languages:</b>{getLanguages}</List>
+                            </ListContainer>
+                        </CountryContainer>
+                        <div>
+                            <h4>Border Countries: </h4>
+                            <div>
+                                {country.borders.map((border, index) => {
+                                    const borderCountry = state.countries.find(el => el?.alpha3Code == border);
+                                    return (
+                                        <Link to={`/${borderCountry?.name}`} key={index} >
+                                            {borderCountry?.name}
+                                        </Link>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </DetailsInnerWrapper>
+                )
+            })}
+        </DetailsOuterWrapper>
     )
 }
 
 export default CityDetails
 
+const DetailsOuterWrapper = styled.div ``;
+const DetailsInnerWrapper = styled.div ``;
+const CountryHeading = styled.h3 ``;
+const CountryContainer = styled.div ``;
+const Button = styled.button ``;
 
