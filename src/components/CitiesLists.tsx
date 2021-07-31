@@ -33,13 +33,13 @@ const AboutCountry = styled.div `
 `;
 const CountryName = styled.h2 `
 `;
-export const ListContainer = styled.ul `
+const ListContainer = styled.ul `
     padding-inline-start: 0;   
 `;
-export const List = styled.li `
+const List = styled.li `
     list-style: none;
 `;
-export const Span = styled.span `
+const Span = styled.span `
     font-weight: 600;
 `;
 
