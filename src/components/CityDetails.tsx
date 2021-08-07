@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Context } from './GlobalContext';
 import styled, { css } from "styled-components";
+import backIcon from "../assets/arrow-left-line.svg";
 
 interface ParamsTypes {
     cityName?: string,
@@ -151,6 +152,12 @@ const Span = styled.span `
 `;
     
 const Button = styled.button `
+    background-image: url('${backIcon}');
+    background-repeat: no-repeat;
+    background-size: 20%;
+    background-position-x: 10%;
+    background-position-y: 50%;
+
     ${ButtonStyles}
     margin-block-end: 64px;
     @media(min-width: 800px) {

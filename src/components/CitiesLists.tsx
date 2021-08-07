@@ -46,8 +46,11 @@ const Span = styled.span `
 
 const Wrapper = styled.div `
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    grid-gap: 32px;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+
+    @media(min-width: 800px) {
+        grid-gap: 32px;
+    }
 `;
 
 export function CitiesLists () {
