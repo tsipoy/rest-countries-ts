@@ -26,9 +26,12 @@ const HeaderContainer = styled.div `
     justify-content: space-between;
     align-items: center;
     margin-block-end: 50px;
-    margin-inline: -40px;
-    padding-inline: 40px;
+    padding-inline: 20px;
     box-shadow: 0px 2px 3px #e5e5e5;
+    @media(min-width: 800px) {
+        margin-inline: -42px;
+        padding-inline: 64px;
+    }
 `;
 const Heading = styled.h1 ``;
 const ModeButton = styled.button `

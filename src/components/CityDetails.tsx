@@ -13,14 +13,12 @@ interface ParamsTypes {
 const CityDetails = () => {
     const { state, dispatch } = useContext(Context);
     const { cityName } = useParams<ParamsTypes>();
-    console.log(cityName);
-    
 
     const countryDetails = state.countries.find((countryName) => countryName.name === cityName);
-    console.log(countryDetails)
+    // console.log(countryDetails)
 
     const findCountry = state.countries.filter(country => country.name === cityName);
-    console.log(findCountry);
+    // console.log(findCountry);
     
     
     const getCurrencies = countryDetails?.currencies.map((currency) => <Span key={currency.code}>{currency.name}</Span>);
@@ -100,6 +98,7 @@ const marginZero = css `
 `;
 
 const DetailsOuterWrapper = styled.div `
+        padding-inline: 20px;
 `;
 
 const FlagImg = styled.img `
@@ -125,7 +124,7 @@ const CountryContainer = styled.div `
     }
 `;
 const ListContainerWrapper = styled.nav `
-@media(min-width: 800px) {
+@media(min-width: 900px) {
     display: flex;
     flex-direction: row;
     justify-content: space-between;

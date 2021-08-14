@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Context } from './GlobalContext';
 import styled from "styled-components";
 import { Link } from 'react-router-dom';
-import { Inputs } from './Inputs';
+import { Form }  from './Form';
 
 const WrapperInner = styled.div `
     background-color: #ffffff;
@@ -76,7 +76,7 @@ export function CitiesLists () {
     
     return (
         <>
-            <Inputs />
+            <Form />
             {state.loading ? <p>Loading ... </p> : 
             <Wrapper>
                 {allCountries}

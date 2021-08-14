@@ -55,10 +55,8 @@ function reducer( state: State, action: Action ):any {
     switch(action.type) {
         case 'SET_COUNTRY':
             return {...state, countries: action.payload, loading: false}
-        case 'SET_INPUTVALUE': return {
-            ...state,
-            inputValue :action.payload
-        }
+        case 'SET_INPUTVALUE': 
+            return {...state,inputValue :action.payload}
         default:
             return state;
     }
