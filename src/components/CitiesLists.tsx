@@ -54,9 +54,12 @@ const Wrapper = styled.div `
 `;
 
 export function CitiesLists () {
-    const { state, dispatch } = useContext(Context);
-    // console.log(state.countries)
-    const allCountries = state.countries.map((country => (
+    const { state } = useContext(Context);
+    
+    const filteredCountries = state.countries.filter((country) => country.name.toLowerCase().includes(state.inputValue.toLowerCase()))
+    .filter((region) => region.region.toLowerCase().includes(state.filteredByRegion.toLowerCase())); 
+    const allCountries = filteredCountries.map((country => (
+        
             <WrapperInner key={country.name}>
                 <Link to={`/${country.name}`}>
                     <FrontPageContainer>

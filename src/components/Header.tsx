@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from "styled-components";
 import moonLine from "../assets/moon-line.svg"
 
@@ -11,7 +12,9 @@ const Header = ({ title = "", label= ""}: Props) => {
 
     return (
         <HeaderContainer>
-            <Heading>{title}</Heading>
+            <Link to="/">
+                <Heading>{title}</Heading>
+            </Link>
             <ModeButton>{label}</ModeButton>
         </HeaderContainer>
     )
@@ -30,7 +33,7 @@ const HeaderContainer = styled.div `
     box-shadow: 0px 2px 3px #e5e5e5;
     @media(min-width: 800px) {
         margin-inline: -42px;
-        padding-inline: 64px;
+        padding-inline: 40px;
     }
 `;
 const Heading = styled.h1 ``;

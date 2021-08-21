@@ -11,7 +11,7 @@ interface ParamsTypes {
 
 
 const CityDetails = () => {
-    const { state, dispatch } = useContext(Context);
+    const { state } = useContext(Context);
     const { cityName } = useParams<ParamsTypes>();
 
     const countryDetails = state.countries.find((countryName) => countryName.name === cityName);
@@ -23,7 +23,6 @@ const CityDetails = () => {
     
     const getCurrencies = countryDetails?.currencies.map((currency) => <Span key={currency.code}>{currency.name}</Span>);
     const getLanguages = countryDetails?.languages.map((language) => <Span key={language.iso639_1}>{language.name}</Span>);
-    const getBorders = countryDetails?.borders.map((border) => <Button key={border}>{border}</Button>);
 
     return (
         <DetailsOuterWrapper>
@@ -59,7 +58,7 @@ const CityDetails = () => {
                                 <BordersHeading>Border Countries: </BordersHeading>
                                 <BordersNameContainer>
                                     {country.borders.map((border, index) => {
-                                        const borderCountry = state.countries.find(el => el?.alpha3Code == border);
+                                        const borderCountry = state.countries.find(el => el?.alpha3Code === border);
                                         return (
                                             <BordesButton key={index}>
                                                 <Link to={`/${borderCountry?.name}`} key={index} >

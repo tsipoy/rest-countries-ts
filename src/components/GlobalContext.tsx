@@ -31,17 +31,20 @@ type State = {
     countries: Country[]
     loading: boolean
     inputValue: string
+    filteredByRegion: string
 }
 
 const initialState = {
     countries: [],
     loading: true,
-    inputValue: ""
+    inputValue: "",
+    filteredByRegion: "",
 }
 
 type Action = 
-| {type: string, payload: Country[] }
-| {type: string, payload: string } 
+| {type: "SET_COUNTRY", payload: Country[]}
+| {type: "SET_INPUTVALUE", payload: string} 
+| {type: "SET_FILTERED_BY_REGION", payload: string}
 
 export const Context = createContext<{
     state: State;
@@ -56,7 +59,9 @@ function reducer( state: State, action: Action ):any {
         case 'SET_COUNTRY':
             return {...state, countries: action.payload, loading: false}
         case 'SET_INPUTVALUE': 
-            return {...state,inputValue :action.payload}
+            return {...state, inputValue :action.payload}
+        case 'SET_FILTERED_BY_REGION': 
+            return {...state, filteredByRegion :action.payload}
         default:
             return state;
     }
@@ -64,12 +69,11 @@ function reducer( state: State, action: Action ):any {
 
 export const GlobalContext: React.FC = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    // console.log(state);
     
     const getCountries = async () => {
         const response = await fetch("https://restcountries.eu/rest/v2/all");
         const data = await response.json();
-        dispatch({type: "SET_COUNTRY", payload: data})
+        dispatch({type: "SET_COUNTRY", payload: data})        
     }
 
     useEffect(() => {
@@ -77,7 +81,7 @@ export const GlobalContext: React.FC = ({ children }) => {
     }, [])
 
     return (
-        <Context.Provider value={{ state, dispatch}}>
+        <Context.Provider value={{state, dispatch}}>
             { children }
         </Context.Provider> 
     )
