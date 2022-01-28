@@ -55,26 +55,25 @@ const Wrapper = styled.div `
 
 export function CitiesLists () {
     const { state } = useContext(Context);
-    
-    const filteredCountries = state.countries.filter((country) => country.name.toLowerCase().includes(state.inputValue.toLowerCase()))
+    // console.log(state.countries);
+    const filteredCountries = state.countries.filter((country) => country.name.common.toLowerCase().includes(state.inputValue.toLowerCase()))
     .filter((region) => region.region.toLowerCase().includes(state.filteredByRegion.toLowerCase())); 
     const allCountries = filteredCountries.map((country => (
-        
-            <WrapperInner key={country.name}>
-                <Link to={`/${country.name}`}>
-                    <FrontPageContainer>
-                        <FlagImg src={country.flag} alt={country.name}/>
-                        <AboutCountry>
-                            <CountryName>{country.name}</CountryName>
-                            <ListContainer>
-                                <List><Span>Population</Span>: {country.population}</List>
-                                <List><Span>Region</Span>: {country.region}</List>
-                                <List><Span>Capital</Span>: {country.capital}</List>
-                            </ListContainer>
-                        </AboutCountry>
-                    </FrontPageContainer>
-                </Link>
-            </WrapperInner>
+        <WrapperInner key={country.name.common}>
+            <Link to={`/${country.name.common}`}>
+                <FrontPageContainer>
+                    <FlagImg src={country.flags.png} alt={country.name.common}/>
+                    <AboutCountry>
+                        <CountryName>{country.name.common}</CountryName>
+                        <ListContainer>
+                            <List><Span>Population</Span>: {country.population}</List>
+                            <List><Span>Region</Span>: {country.region}</List>
+                            <List><Span>Capital</Span>: {country.capital}</List>
+                        </ListContainer>
+                    </AboutCountry>
+                </FrontPageContainer>
+            </Link>
+        </WrapperInner>
     )))
     
     return (

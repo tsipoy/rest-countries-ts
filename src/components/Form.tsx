@@ -2,7 +2,6 @@ import React, { useRef, useContext } from 'react'
 import { Context } from './GlobalContext';
 import styled, { css } from "styled-components";
 import searchIcon from "../assets/search-icon.svg";
-import dropDownIcon from "../assets/drop-down-icon.svg"
 
 export const Form = () => {
     const { state, dispatch } = useContext(Context);
@@ -27,7 +26,7 @@ export const Form = () => {
     })
 
     const uniqueArray = allRegions.filter(function(item, pos) {
-        return allRegions.indexOf(item) == pos;
+        return allRegions.indexOf(item) === pos;
     })
 
     const mapRegions = uniqueArray.map((region, index) => {

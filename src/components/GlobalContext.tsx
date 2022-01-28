@@ -1,8 +1,9 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 
 type Country = {
-    name: string,
-    topLevelDomain: string[],
+    name: {common: string, official: string; nativeName: [object[]]},
+    tld: string[],
+    cca3: string;
     alpha2Code: string,
     alpha3Code: string,
     callingCodes: string[],
@@ -19,10 +20,10 @@ type Country = {
     borders: string[],
     nativeName: string,
     numericCode: string,
-    currencies: { code: string, name: string}[],
-    languages: { name: string, iso639_1: string}[],
+    currencies: { name: string, symbol: string }[],
+    languages: string[],
     translations: string[],
-    flag: string,
+    flags: { png: string },
     regionalBlocs: string[],
     cioc: string
 }
@@ -71,7 +72,7 @@ export const GlobalContext: React.FC = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     
     const getCountries = async () => {
-        const response = await fetch("https://restcountries.eu/rest/v2/all");
+        const response = await fetch("https://restcountries.com/v3.1/all");
         const data = await response.json();
         dispatch({type: "SET_COUNTRY", payload: data})        
     }

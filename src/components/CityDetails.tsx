@@ -13,17 +13,15 @@ interface ParamsTypes {
 const CityDetails = () => {
     const { state } = useContext(Context);
     const { cityName } = useParams<ParamsTypes>();
-
-    const countryDetails = state.countries.find((countryName) => countryName.name === cityName);
+    
+    // const countryDetails = state.countries.find((countryName) => countryName.name.common === cityName);
     // console.log(countryDetails)
-
-    const findCountry = state.countries.filter(country => country.name === cityName);
+    
+    const findCountry = state.countries.filter(country => country.name.common === cityName);
     // console.log(findCountry);
     
-    
-    const getCurrencies = countryDetails?.currencies.map((currency) => <Span key={currency.code}>{currency.name}</Span>);
-    const getLanguages = countryDetails?.languages.map((language) => <Span key={language.iso639_1}>{language.name}</Span>);
-
+    // const getCurrencies = countryDetails?.currencies.map((currency) => <Span key={currency.PGK.name}>{currency.name}</Span>);
+    // const getLanguages = countryDetails?.languages.map((language) => <Span key={language.iso639_1}>{language.name}</Span>);
     return (
         <DetailsOuterWrapper>
             <Button>
@@ -32,37 +30,50 @@ const CityDetails = () => {
                 </Link>
             </Button>
             {findCountry.map((country, index) => {
-
+                // console.log(country.borders)
                 return (
                     <DetailsInnerWrapper key={index}>
-                        <FlagImg src={country?.flag} alt={country?.name} />
+                        <FlagImg src={country.flags.png} alt={country?.name.common} />
                         <CountryContainer>
                             <ListContainerWrapper>
                                 <ListContainerWrapperInner>
                                     <List>
-                                        <CountryHeading>{country?.name}</CountryHeading>
+                                        <CountryHeading>{country?.name.common}</CountryHeading>
                                     </List>
-                                    <List><Span>Native name: </Span>{country?.nativeName}</List>
+                                    <List><Span>Native name: </Span>{country?.name.official}</List>
                                     <List><Span>Population: </Span>{country?.population}</List>
                                     <List><Span>Region: </Span>{country?.region}</List>
                                     <List><Span>Sub Region: </Span>{country?.subregion}</List>
                                     <List><Span>Capital: </Span> {country?.capital}</List>
                                 </ListContainerWrapperInner>
                                 <ListContainerWrapperInner>
-                                    <List><Span>Top level domain: </Span>{country?.topLevelDomain}</List>
-                                    <List><b>Currencies: </b>{getCurrencies}</List>
-                                    <List><b>Languages: </b>{getLanguages}</List>
+                                    <List>
+                                        <Span>Top level domain: </Span>{country?.tld}
+                                    </List>
+                                    {country?.currencies && Object.values(country?.currencies).map((currencie: any) => (            
+                                        <List key={currencie?.name}>
+                                            <Span>Currencies: </Span>
+                                            {currencie?.name}
+                                        </List>
+                                    ))}
+                                    {Object.keys(country?.languages).length > 0
+                                        ? Object.values(country?.languages).map((lang: any, ind: number) => (                    
+                                            <List key={lang[ind]}>
+                                                <Span>Language: </Span>
+                                                {lang}
+                                            </List>
+                                    )) : null}
                                 </ListContainerWrapperInner>
                             </ListContainerWrapper>
                             <BordersContainer>
                                 <BordersHeading>Border Countries: </BordersHeading>
                                 <BordersNameContainer>
-                                    {country.borders.map((border, index) => {
-                                        const borderCountry = state.countries.find(el => el?.alpha3Code === border);
+                                    {country.borders === undefined || country.borders.map((border) => {
+                                        const borderCountry = state.countries.find(el => el?.cca3 === border);
                                         return (
-                                            <BordesButton key={index}>
-                                                <Link to={`/${borderCountry?.name}`} key={index} >
-                                                        {borderCountry?.name}
+                                            <BordesButton key={borderCountry?.cca3}>
+                                                <Link to={`/${borderCountry?.name.common}`}>
+                                                    {country.borders === undefined ? "No border countries" : borderCountry?.name.common}
                                                 </Link>
                                             </BordesButton>
                                         )
